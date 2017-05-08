@@ -1,0 +1,98 @@
+`<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>轮播</title>
+	<link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+	<div id='wrapper'>
+		<div id='ad'>
+			<ul id='ul'>
+				<li><a href=""><img src="images/1.jpg" alt=""></a></li>
+				<li><a href=""><img src="images/2.jpg" alt=""></a></li>
+				<li><a href=""><img src="images/3.jpg" alt=""></a></li>
+				<li><a href=""><img src="images/4.jpg" alt=""></a></li>
+				<li><a href=""><img src="images/5.jpg" alt=""></a></li>
+			</ul>
+		</div>
+		<div id='square'>
+			<span class="current"><a href="">1</a></span>
+			<span><a href="">2</a></span>
+			<span><a href="">3</a></span>
+			<span><a href="">4</a></span>
+			<span><a href="">5</a></span>
+		</div>
+		<div id='arrow'>
+			<span id='left'>&lt;</span>
+			<span id='right'>&gt;</span>
+		</div>
+	</div>
+	<script type='text/javascript'>
+	    //获取dom
+	    var ad=document.getElementById('ul');
+	    var square=document.getElementById('square').children;
+	    var arrow=document.getElementById('arrow');
+	    var left=document.getElementById('left');
+	    var right=document.getElementById('right');
+	    var index=0;
+	    var pic=0;
+	    var timer=null;
+	    var width=ad.children[0].offsetWidth;
+	    //定义核心函数
+	    function showImg(index){
+	    	ad.style.left=-width*index+'px';
+	    	for (var i = 0; i < square.length; i++) {
+	    		square[i].className='';
+	    	}
+	    	square[index].className='current';
+	    }
+	    //为小圆圈添加mouseover事件
+	    for (var k = 0; k < square.length; k++) {
+	    	square[k].index=k;
+            square[k].addEventListener('mouseover', function(){
+            	clearInterval(timer);
+            	for(var j = 0; j < square.length; j++){
+            		square[j].className='';
+            	}
+            	index=this.index;
+            	showImg(index);
+            	this.className='current';
+            });
+	    }
+	    //进入盒子显示箭头，取消定制器；离开盒子箭头消失，重启定时器
+	    wrapper.addEventListener('mouseover', function(){
+	    	clearInterval(timer);
+	    	arrow.style.display='block';
+	    });
+	    wrapper.addEventListener('mouseout', function(){
+	    	arrow.style.display='none';
+	    	timer=setInterval(function(){
+	    		index++;
+	    		if(index==ad.children.length){
+	    			index=0;
+	    		}
+	    		showImg(index);
+
+	    	}, 1000);
+	    });
+	    //为箭头添加点击监听
+	     right.addEventListener("click", function(){
+               if(pic<5){
+               	pic++
+               }
+               if(pic==5){
+               	return false;
+               }
+               showImg(pic);
+	    });
+	     left.addEventListener("click", function(){
+	     	      if(pic==0){
+	     	      	return false;
+	     	      }
+               	  pic--;
+                  showImg(pic);
+	    });
+	</script>
+</body>
+</html>

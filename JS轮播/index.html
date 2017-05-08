@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>轮播</title>
+	<link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+	<div id='wrapper'>
+		<div id='ad'>
+			<ul id='ul'>
+				<li><a href=""><img src="images/1.jpg" alt=""></a></li>
+				<li><a href=""><img src="images/2.jpg" alt=""></a></li>
+				<li><a href=""><img src="images/3.jpg" alt=""></a></li>
+				<li><a href=""><img src="images/4.jpg" alt=""></a></li>
+				<li><a href=""><img src="images/5.jpg" alt=""></a></li>
+			</ul>
+		</div>
+		<div id='square'>
+			<span class="current"><a href="">1</a></span>
+			<span><a href="">2</a></span>
+			<span><a href="">3</a></span>
+			<span><a href="">4</a></span>
+			<span><a href="">5</a></span>
+		</div>
+		<div id='arrow'>
+			<span id='left'>&lt;</span>
+			<span id='right'>&gt;</span>
+		</div>
+	</div>
+	<script type='text/javascript'>
+	//获取dom
+		var wrapper=document.getElementById('wrapper');
+		var ad=wrapper.children[0];
+		var square=wrapper.children[1];
+		var arrow=wrapper.children[2];
+		var ul=ad.children[0];
+		var li=ul.children;
+		var page=square.children;
+		var left=document.getElementById('left');
+		var right=document.getElementById('right');
+		var imgWidth=ad.offsetWidth;
+		var target=-imgWidth;
+		var timer=null;
+		var index=0;
+		var pic=0;
+
+	 //开启定时器
+	    timer=setInterval(sport, 2000);  
+
+	 //进入盒子，出现箭头，清除定时器。离开盒子，箭头消失，重启定时器
+	    wrapper.addEventListener('mouseover', function(){
+	    	clearInterval(timer);
+	    	arrow.style.display='inline-block';
+	    });
+
+	    wrapper.addEventListener('mouseout', function(){
+	    	arrow.style.display='none';
+	    	timer=setInterval(sport, 2000);
+	    });
+
+	//添加运动函数
+        function sport(){
+        	index++;
+        	pic++
+        	if(index==li.length){
+        		index=0;
+        	}
+        	for (var k = 0; k < page.length; k++) {
+        		page[k].className='';
+        	}
+        	page[index].className='current';
+        	ul.style.left=target*index+'px';
+        }
+      
+   //为小圆圈绑定mouseover事件
+        for (var i = 0; i < page.length; i++) {
+        	page[i].index=i;
+        	page[i].onmouseover=function(){
+        		for (var j = 0; j < page.length; j++) {
+        			page[j].className='';
+        		}
+        		this.className='current';
+        		ul.style.left=target*this.index+'px';
+        		index=this.index;
+        	}
+        }
+   //??为箭头标签添加点击事件??
+   right.addEventListener('click', function(){
+   	   sport();
+   });
+	</script>
+</body>
+</html>
